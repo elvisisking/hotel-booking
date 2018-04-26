@@ -96,16 +96,19 @@ class LoginViewController: UIViewController {
 //                    //get auth token? Check if empty and throw error/return. Else go to MyReservations page
         
          self.removeActivityIndicator(activityIndicator: loginActivityMonitor)
+                    let appDelegate = UIApplication.shared.delegate
+        
                     DispatchQueue.main.async {
-                        let reservationsPage = self.storyboard?.instantiateViewController(withIdentifier: "ReservationsViewController") as! ReservationsViewController
-                        
-                        let appDelegate = UIApplication.shared.delegate
-                        // replace sign in page
-                        appDelegate?.window??.rootViewController = reservationsPage
-                        
-                        
-                        
-//                    }
+                        if PrefMgr.shared.askForAcceptance {
+                            let acceptanceController = self.storyboard?.instantiateViewController( withIdentifier: AcceptanceController.storyboardId )
+                            appDelegate?.window??.rootViewController = acceptanceController
+                        } else {
+                            let reservationsPage = self.storyboard?.instantiateViewController(withIdentifier: "ReservationsViewController") as! ReservationsViewController
+                            
+                            // replace sign in page
+                            appDelegate?.window??.rootViewController = reservationsPage
+                        }
+//                  }
 //
 //
 //                } else {
